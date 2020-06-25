@@ -1,5 +1,7 @@
 package game.labyrinth;
 
+import game.engine.LabyrinthObjectVisitor;
+
 public abstract class LabyrinthObject {
     Coordinate coordinate;
 
@@ -29,4 +31,5 @@ public abstract class LabyrinthObject {
         return this.coordinate.equals(labyrinthObject.coordinate);
     }
     
+    public abstract void accept(LabyrinthObjectVisitor visitor);    
 }

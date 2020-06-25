@@ -1,5 +1,7 @@
 package game.labyrinth;
 
+import game.engine.LabyrinthObjectVisitor;
+
 public class Checkpoint extends LabyrinthObject {
     Boolean conquered;
 
@@ -14,5 +16,9 @@ public class Checkpoint extends LabyrinthObject {
 
     void conquer() {
         conquered = true;
+    }
+
+    public void accept(LabyrinthObjectVisitor visitor) {
+        visitor.visit(this);
     }
 }

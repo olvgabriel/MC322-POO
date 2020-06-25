@@ -1,5 +1,7 @@
 package game.labyrinth;
 
+import game.engine.LabyrinthObjectVisitor;
+
 public class Player extends LabyrinthObject {
     Direction currentDirection;
 
@@ -25,13 +27,13 @@ public class Player extends LabyrinthObject {
 
     private boolean hasWall(Direction direction, Wall[] walls) {
         if (direction == Direction.UP) {
-            return hasWallInPosition(this.getX(), this.getY()+1, walls);            
+            return hasWallInPosition(this.getX()-1, this.getY(), walls);            
         } else if (direction == Direction.DOWN) {
-            return hasWallInPosition(this.getX(), this.getY()-1, walls); 
-        } else if (direction == Direction.LEFT) {
-            return hasWallInPosition(this.getX()-1, this.getY(), walls); 
-        } else { // direction == RIGHT
             return hasWallInPosition(this.getX()+1, this.getY(), walls); 
+        } else if (direction == Direction.LEFT) {
+            return hasWallInPosition(this.getX(), this.getY()-1, walls); 
+        } else { // direction == RIGHT
+            return hasWallInPosition(this.getX(), this.getY()+1, walls); 
         }
     }
 
@@ -39,17 +41,21 @@ public class Player extends LabyrinthObject {
     void move(Direction direction, Wall[] walls) {
         if (hasWall(direction, walls) == false) {
             if (direction == Direction.UP) {
-                this.coordinate.changeCoordinates(this.getX(), this.getY()+1);
-            } else if (direction == Direction.DOWN) {
-                this.coordinate.changeCoordinates(this.getX(), this.getY()-1);
-            } else if (direction == Direction.LEFT) {
                 this.coordinate.changeCoordinates(this.getX()-1, this.getY());
-            } else { // direction == RIGHT
+            } else if (direction == Direction.DOWN) {
                 this.coordinate.changeCoordinates(this.getX()+1, this.getY());
+            } else if (direction == Direction.LEFT) {
+                this.coordinate.changeCoordinates(this.getX(), this.getY()-1);
+            } else { // direction == RIGHT
+                this.coordinate.changeCoordinates(this.getX(), this.getY()+1);
             }
             this.currentDirection = direction;
         }
     }
     
+    @Override
+    public void accept(LabyrinthObjectVisitor visitor) {
+        visitor.visit(this);
+    }
     
 }
