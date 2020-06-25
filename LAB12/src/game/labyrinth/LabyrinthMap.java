@@ -26,8 +26,8 @@ public class LabyrinthMap {
     }
 
     private boolean isValidPosition(int x, int y) {
-        if (x > 0 && x <= this.height) {
-            if (y > 0 && y <= this.width) {
+        if (y >= 0 && y < this.height) {
+            if (x >= 0 && x < this.width) {
                 return true;
             } else {
                 return false;
@@ -39,13 +39,22 @@ public class LabyrinthMap {
     
     private boolean isValidMovement(Direction direction) {
         if (direction == Direction.UP) {
-            return isValidPosition(player.getX()-1, player.getY());
-        } else if (direction == Direction.DOWN) {
-            return isValidPosition(player.getX()+1, player.getY());
-        } else if (direction == Direction.LEFT) {
             return isValidPosition(player.getX(), player.getY()-1);
-        } else { // direction == RIGHT
+        } else if (direction == Direction.DOWN) {
             return isValidPosition(player.getX(), player.getY()+1);
+        } else if (direction == Direction.LEFT) {
+            return isValidPosition(player.getX()-1, player.getY());
+        } else { // direction == RIGHT
+            return isValidPosition(player.getX()+1, player.getY());
+        }
+    }
+
+    private void achieveCheckpoint() {
+        for (Checkpoint checkpoint : checkpoints) {
+            if (checkpoint.isSameCoordinates(player)) {
+                checkpoint.conquer();
+                break;
+            }
         }
     }
 
@@ -53,6 +62,7 @@ public class LabyrinthMap {
         if (direction != null) {
             if (isValidMovement(direction)) {
                 player.move(direction, walls);
+                achieveCheckpoint();
             }
         }
     }

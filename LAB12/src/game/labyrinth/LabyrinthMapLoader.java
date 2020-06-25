@@ -22,7 +22,7 @@ public class LabyrinthMapLoader {
 
     
     public LabyrinthMap createDefaultMap() {
-        Player player = new Player(1, 1);
+        Player player = new Player(0, 0);
 
         Checkpoint checkpoint1 = new Checkpoint(2, 5);
         Checkpoint checkpoint2 = new Checkpoint(5, 5);
